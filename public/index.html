@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>bOAt Website Scraper</h1>
+        <input type="text" id="searchInput" placeholder="Enter search query...">
+        <button onclick="search()">Search</button>
+        <div id="results"></div>
+      </div>
+
+  <script>
+    async function search() {
+      const query = document.getElementById('searchInput').value;
+      const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+      const data = await response.json();
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <p>Discount: ${item.discount} % off</p>
+          <p>Title: ${item.title} </p>
+          <p>Original Price: ${item.price}</p>
+          <p>Discounted Price: ${item.discounted_price}</p>
+          <img src="${item.src}" alt="${item.alt}">
+          <hr>
+        `;
+        resultsDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
